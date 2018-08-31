@@ -1,0 +1,88 @@
+import scipy
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
+from scipy import ndimage
+import plotly.plotly as py
+from PIL import Image
+import pytesseract
+import math
+src = cv2.imread('right3.png')
+
+gray = cv2.cvtColor( src, cv2.COLOR_RGB2GRAY )
+blur = cv2.GaussianBlur(gray,(3,3),0)
+ret, binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+
+n_black_pix = np.sum(binary == 0)
+n_white_pix = np.sum(binary == 255)
+print('Number of white pixels:', n_white_pix)
+print('Number of black pixels:', n_black_pix)
+
+inv=binary
+if(n_black_pix<n_white_pix):
+    inv =255-binary
+midfil=inv
+rows,cols = midfil.shape
+
+print(rows," ",cols)
+out=30
+for i in range(out):
+    for j in range(cols):
+         midfil[i, j]=0
+
+for i in range(rows-out,rows):
+    for j in range(cols):
+        midfil[i, j] = 0
+
+for i in range(rows):
+    for j in range(cols-out,cols):
+         midfil[i, j]=0
+
+for i in range(rows):
+    for j in range(out):
+         midfil[i, j]=0
+
+
+
+mid = cv2.medianBlur(midfil,5)
+for i in range(10):
+    mid = cv2.medianBlur(mid,5)
+
+
+
+canny = cv2.Canny(mid, 100, 200)
+
+cv2.imshow("pranto",canny)
+cv2.waitKey(0)
+
+
+
+'''
+titles = ['Original Image','Gray','Filtering','Binary Image','Inverse','INV Updated','Median']
+images = [src, gray, blur,binary,inv,midfil,mid]
+for i in range(7):
+    plt.subplot(3,3,i+1),plt.imshow(images[i],'gray')
+    plt.title(titles[i])
+    plt.xticks([]),plt.yticks([])
+plt.show()
+
+'''
+p=0
+for i in range(rows):
+    for j in range(cols):
+        if(canny[i][j]==255):
+            if(j>=p):
+                p=j
+
+
+
+
+print(p);
+if(p<215 and p>145):
+    print("MIDDLE");
+if(p>=215):
+    print("LEFT");
+if(p<=145):
+    print("RIGHT");
+prac = mid
+

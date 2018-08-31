@@ -121,7 +121,7 @@ while(cap.isOpened()):
             
     b = datetime.datetime.now()
     print(b-a)
-    time.sleep(.5)
+    time.sleep(.1)
     cv2.imshow('frame',image)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

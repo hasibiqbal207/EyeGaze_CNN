@@ -1,23 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Aug 29 23:18:40 2018
+Created on Fri Aug 31 23:26:42 2018
 
 @author: prant
 """
 
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Aug 28 23:20:42 2018
-
-@author: prant
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Aug 25 12:24:51 2018
-
-@author: prant
-"""
 from keras.models import Sequential
 from keras.layers import Conv2D
 from keras.layers import MaxPooling2D
@@ -51,21 +38,21 @@ train_datagen = ImageDataGenerator(rescale = 1./255,
 
 test_datagen = ImageDataGenerator(rescale = 1./255)
 
-training_set = train_datagen.flow_from_directory('dataset_eyebrow/left_eye/train',
+training_set = train_datagen.flow_from_directory('dataset_eyebrow/right_eye/train',
                                                  target_size = (64, 64),
                                                  batch_size = 32,
                                                  class_mode = 'categorical')
 
-test_set = test_datagen.flow_from_directory('dataset_eyebrow/left_eye/test',
+test_set = test_datagen.flow_from_directory('dataset_eyebrow/right_eye/test',
                                             target_size = (64, 64),
                                             batch_size = 32,
                                             class_mode = 'categorical')
 
 
 classifier.fit_generator(training_set,
-                         samples_per_epoch = 161,
+                         samples_per_epoch = 398,
                          nb_epoch = 25,
                          validation_data = test_set,
-                         nb_val_samples = 39)
+                         nb_val_samples = 48)
 
-classifier.save('lefteyemodel.h5')
+classifier.save('righteyemodel.h5')
